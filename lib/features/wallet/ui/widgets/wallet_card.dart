@@ -35,7 +35,7 @@ class WalletCard extends ConsumerWidget {
   /// 將 BigInt 餘額用對應鏈別的格式化方式轉成文字
   String _balanceText(WalletState st, Chain chain) {
     final v = st.balanceWei ?? BigInt.zero;
-    return '${formatEth(v)} ETH';
+    return '${formatEth(v)} ${chain.displaySymbol}';
   }
 
   @override

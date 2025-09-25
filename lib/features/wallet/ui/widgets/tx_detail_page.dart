@@ -5,7 +5,8 @@ import 'package:web3dart/web3dart.dart';
 import '../../data/providers/tx_status_providers.dart';
 import '../../data/chains/evm_chain_client.dart';
 import '../../data/providers/chain_client_provider.dart';
-import '../../data/core/service/tx_watcher_provider.dart'; // 可選：全域 watcher
+import '../../data/core/service/tx_watcher_provider.dart';
+import '../../data/providers/wallet_providers.dart'; // 可選：全域 watcher
 
 class TxDetailPage extends ConsumerStatefulWidget {
   const TxDetailPage({super.key, required this.txHash});
@@ -35,7 +36,6 @@ class _TxDetailPageState extends ConsumerState<TxDetailPage> {
     ref.watch(txWatcherProvider);
 
     final detailAsync = ref.watch(txDetailProvider(_currentHash));
-
     return Scaffold(
       appBar: AppBar(title: const Text('Transaction Detail')),
       body: detailAsync.when(
@@ -174,12 +174,13 @@ class _TxDetailPageState extends ConsumerState<TxDetailPage> {
   }
 }
 
-class _TxMeta extends StatelessWidget {
+class _TxMeta extends ConsumerWidget {
   const _TxMeta({required this.info});
   final TransactionInformation info;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chain = ref.watch(currentChainProvider);
     final to = info.to?.hexEip55 ?? '(contract creation?)';
     final valEth = info.value == null
         ? '0'
@@ -190,7 +191,7 @@ class _TxMeta extends StatelessWidget {
       children: [
         Text('From: ${info.from.hexEip55}'),
         Text('To:   $to'),
-        Text('Value: $valEth ETH'),
+        Text('Value: $valEth ${chain.displaySymbol}'),
         Text('Nonce: ${info.nonce}  •  Gas: $gasStr'),
       ],
     );

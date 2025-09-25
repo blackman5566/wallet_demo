@@ -162,7 +162,6 @@ class _SendSheetState extends ConsumerState<SendSheet> {
     final chain = ref.watch(currentChainProvider);
     final st = ref.watch(walletProvider);
     final balEth = _weiToEthString(st.balanceWei ?? BigInt.zero);
-
     return Padding(
       padding: EdgeInsets.only(
         left: 16,
@@ -227,9 +226,9 @@ class _SendSheetState extends ConsumerState<SendSheet> {
             Expanded(
               child: TextField(
                 controller: _amt,
-                decoration: const InputDecoration(
-                  labelText: 'Amount (ETH)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'Amount ${chain.displaySymbol}}',
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
               ),
@@ -243,7 +242,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
           // ---------------- 顯示估算手續費 ----------------
           if (_estFeeWei != null)
             Text(
-              'Estimated fee: ${_weiToEthString(_estFeeWei!)} ETH'
+              'Estimated fee: ${_weiToEthString(_estFeeWei!)}  ${chain.displaySymbol}}'
                   '${_estGasRaw != null ? ' (gas ≈ $_estGasRaw + 20%)' : ''}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
@@ -275,7 +274,7 @@ class _SendSheetState extends ConsumerState<SendSheet> {
               final need = amtWei + (_estFeeWei ?? BigInt.zero);
               if (bal < need) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Insufficient balance (need ${_weiToEthString(need)} ETH，have $balEth ETH）')),
+                  SnackBar(content: Text('Insufficient balance (need ${_weiToEthString(need)}  ${chain.displaySymbol}}，have $balEth  ${chain.displaySymbol}}）')),
                 );
                 return;
               }
