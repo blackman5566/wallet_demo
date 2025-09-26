@@ -30,7 +30,7 @@
    ```bash
    flutter pub get
    ```
-3. 準備環境變數：複製 `assets/env/.env`，視需求設定 `RPC_URL`、`CHAIN_ID`。若缺檔會使用預設 Ethereum Sepolia。 【F:lib/features/wallet/data/core/common/env.dart†L1-L33】
+3. 準備環境變數：複製 `assets/env/.env`，視需求設定 `RPC_URL`、`CHAIN_ID`。若缺檔會使用預設 Ethereum Sepolia。
 4. 執行 App：
    ```bash
    flutter run
