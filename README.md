@@ -1,3 +1,7 @@
+<div align="left">
+  <a href="README-CN.md"><img alt="中文" src="https://img.shields.io/badge/文档-中文-blue"></a>
+</div>
+
 # Multi-Chain Wallet -- Flutter App
 
 > A Flutter/Riverpod multi-chain wallet supporting Ethereum, Polygon,
