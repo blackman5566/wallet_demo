@@ -8,8 +8,8 @@ import '../core/common/chains.dart';
 import '../core/evm/EIP1559Model/fee_api_web3dart.dart';
 import '../core/keyService/core/key_service.dart';
 import '../core/keyService/keyServiceProvider.dart';
-import '../core/service/nonce_store.dart';
-import '../core/service/web3_service.dart';
+import '../core/service/evm/nonce_store.dart';
+import '../core/service/evm/evm_rpc_service.dart';
 import '../providers/wallet_providers.dart';
 import 'chain_client.dart';
 

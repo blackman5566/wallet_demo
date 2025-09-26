@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:wallet_demo/features/wallet/ui/sheets/send_sheet.dart';
 import 'package:wallet_demo/features/wallet/data/providers/wallet_providers.dart';
+import 'package:wallet_demo/features/wallet/ui/sheets/sol_send_sheet.dart';
 
 import '../data/core/common/chains.dart';
-import '../data/core/service/tx_watcher_provider.dart';
+import '../data/core/service/evm/tx_watcher_provider.dart';
 import '../data/providers/wallet_notifier.dart';
 import 'widgets/top_bar.dart';
 import 'widgets/setup_card.dart';
@@ -30,6 +31,7 @@ class WalletPage extends ConsumerStatefulWidget {
 }
 
 class _WalletPageState extends ConsumerState<WalletPage> {
+  ProviderSubscription? _sub;
   @override
   void initState() {
     super.initState();
@@ -41,7 +43,7 @@ class _WalletPageState extends ConsumerState<WalletPage> {
 
   @override
   Widget build(BuildContext context) {
-    final tx = ref.watch(txWatcherProvider);
+    //final tx = ref.watch(txWatcherProvider);
     final st = ref.watch(walletProvider);// 監聽錢包整體狀態（例如：loading、餘額、地址等）
     final exists = ref.watch(walletExistsProvider); // 查詢是否已存在錢包（用來決定要顯示 SetupCard 還是 WalletCard）
 
@@ -93,11 +95,19 @@ class _WalletPageState extends ConsumerState<WalletPage> {
 
   /// 依「目前鏈別」打開發送面板
   void _onPressSend(Chain chain) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true, // 允許內容撐高（如有鍵盤彈出）
-      builder: (_) => const SendSheet(),
-    );
+    if (chain.kind == ChainKind.sol) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true, // 允許內容撐高（如有鍵盤彈出）
+        builder: (_) => const SendSheetSol(),
+      );
+    }else{
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true, // 允許內容撐高（如有鍵盤彈出）
+        builder: (_) => const SendSheet(),
+      );
+    }
   }
 
   /// 打開「接收地址」的面板（顯示地址、可複製）

@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../chains/sol_chain_client.dart';
 import '../core/common/chains.dart';
+import '../core/keyService/keyServiceProvider.dart';
 import 'wallet_providers.dart';
 import '../chains/chain_client.dart';
 import '../chains/evm_chain_client.dart';
@@ -27,8 +29,9 @@ final chainClientProvider = Provider<ChainClient>((ref) {
 
   // 根據鏈的種類 (EVM 或 Solana) 建立對應的鏈客戶端
   switch (chain.kind) {
-    case ChainKind.evm:
-    // 以太坊及所有 EVM 相容鏈使用的客戶端
-      return EvmChainClient(ref);
+     case ChainKind.evm:
+        return EvmChainClient(ref);
+      case ChainKind.sol:
+        return SolChainClient(ref);
   }
 });

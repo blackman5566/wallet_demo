@@ -67,6 +67,8 @@ class TopBar extends ConsumerWidget {
 
               // (D) 給使用者一個提示訊息（SnackBar）
               final name = supportedChains.firstWhere((e) => e.id == id).name;
+
+
               if (!context.mounted) return; // 若畫面已被關閉就不要再顯示
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text('已切換到 $name')));

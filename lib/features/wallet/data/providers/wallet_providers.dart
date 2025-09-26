@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:solana/dto.dart' as sol;
 import '../core/common/chains.dart';
 import '../core/keyService/keyServiceProvider.dart';
 import '../core/keyService/core/key_service.dart';
-import '../core/service/web3_service.dart';
+import '../core/service/evm/evm_rpc_service.dart';
+import '../core/service/sol/sol_rpc_service.dart';
 import 'account_name_store.dart';
 
 // ============================================================================
@@ -31,21 +33,32 @@ final currentChainProvider = Provider<Chain>((ref) {
 // wallet_providers.dart（或原本放 web3 的地方）
 final web3ServiceProvider = Provider<Web3Service>((ref) {
   final c = ref.watch(currentChainProvider);
-  // 你可以把備援清單放在 Chain 內（rpcs[]），
-  // 或先用簡單 hardcode（之後再搬到 Chain）
-  final fallbacks = <String>[
-    // 針對不同鏈填上備援；下面是 Sepolia 範例（請按需替換）
-    // 'https://sepolia.infura.io/v3/<YOUR_KEY>',
-    // 'https://rpc.sepolia.org',
-  ];
-
   return Web3Service(
-    rpcs: [c.rpc, ...fallbacks],
+    rpcs: [c.rpc],
     chainId: c.id,
     callTimeout: const Duration(seconds: 8),
     maxAttempts: 3,
     baseBackoff: const Duration(milliseconds: 300),
     cooldown: const Duration(seconds: 8),
+  );
+});
+
+final solRpcServiceProvider = Provider<SolRpcService>((ref) {
+  final chain = ref.watch(currentChainProvider);
+  if (chain.kind != ChainKind.sol) {
+    throw StateError('目前鏈不是 Solana，無法建立 SolRpcService');
+  }
+
+  // 這裡可以放多個 RPC 端點，前面是主，後面是備援
+  return SolRpcService(
+    rpcs: [
+      chain.rpc,
+    ],
+    callTimeout: const Duration(seconds: 8),
+    maxAttempts: 3,
+    baseBackoff: const Duration(milliseconds: 300),
+    cooldown: const Duration(seconds: 8),
+    commitment: sol.Commitment.confirmed,
   );
 });
 

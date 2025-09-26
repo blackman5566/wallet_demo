@@ -5,7 +5,7 @@ import 'package:web3dart/web3dart.dart';
 import '../../data/providers/tx_status_providers.dart';
 import '../../data/chains/evm_chain_client.dart';
 import '../../data/providers/chain_client_provider.dart';
-import '../../data/core/service/tx_watcher_provider.dart';
+import '../../data/core/service/evm/tx_watcher_provider.dart';
 import '../../data/providers/wallet_providers.dart'; // 可選：全域 watcher
 
 class TxDetailPage extends ConsumerStatefulWidget {
@@ -32,8 +32,6 @@ class _TxDetailPageState extends ConsumerState<TxDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // 可選：啟動全域 TxWatcher 背景清 pending
-    ref.watch(txWatcherProvider);
 
     final detailAsync = ref.watch(txDetailProvider(_currentHash));
     return Scaffold(

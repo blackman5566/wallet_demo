@@ -2,9 +2,9 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wallet_demo/features/wallet/data/core/service/web3_service.dart';
+import 'package:wallet_demo/features/wallet/data/core/service/evm/evm_rpc_service.dart';
 import 'package:web3dart/web3dart.dart';
-import '../../providers/chain_client_provider.dart';
+import '../../../providers/chain_client_provider.dart';
 import 'nonce_store.dart';
 
 /// 輪詢交易監控：定期讀本地 pending，查鏈上收據，有結果就 resolve。

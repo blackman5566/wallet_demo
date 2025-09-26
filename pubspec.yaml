@@ -47,8 +47,7 @@ dependencies:
   url_launcher: ^6.3.0
   pointycastle: ^3.7.4
   solana: ^0.31.2+1
-  flutter_windowmanager: ^0.2.0
-
+  screen_protector: ^1.4.2+1
 dev_dependencies:
   flutter_test:
     sdk: flutter

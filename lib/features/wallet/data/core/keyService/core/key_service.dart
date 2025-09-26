@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:bip39/bip39.dart' as bip39;        // BIP-39：產生 / 驗證助記詞，並可轉成種子 (seed)
+import 'package:solana/solana.dart' as sol;
 import '../../common/chains.dart';
 import 'account_index_store.dart';
 import 'hd_deriver.dart';
@@ -132,5 +133,19 @@ extension KeyServiceDeriveEvmPrivHex on KeyService {
     final i = index ?? await getIndexByKind(ChainKind.evm);   // 2. 取得索引（預設 current）
     // 3. 透過 HdDeriver 依 BIP-44 路徑推導出 32 bytes 私鑰，並轉成 hex
     return _deriver.evmPrivateHex(mnemonic: m, index: i, passphrase: passphrase);
+  }
+}
+
+extension SolanaDerivation on KeyService {
+  /// 依照目前索引從助記詞推導 Solana Keypair
+  Future<sol.Ed25519HDKeyPair> deriveSolanaKeypair() async {
+    final m = await exportMnemonic();      // 你原本存的助記詞
+    final seed = bip39.mnemonicToSeed(m);  // BIP-39 → seed
+    // Solana 使用 path: m/44'/501'/0'/0' + index
+    final index = await getIndexByKind(ChainKind.sol);
+    return sol.Ed25519HDKeyPair.fromMnemonic(
+      m,
+      account: index,
+    );
   }
 }

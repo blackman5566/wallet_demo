@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:wallet_demo/features/wallet/data/core/keyService/core/key_service.dart';
 import '../../data/core/keyService/keyServiceProvider.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 class ExportMnemonicSheet extends ConsumerStatefulWidget {
   const ExportMnemonicSheet({super.key});
@@ -38,20 +38,15 @@ class _ExportMnemonicSheetState extends ConsumerState<ExportMnemonicSheet> {
   Future<void> _protectScreen(bool on) async {
     try {
       if (on) {
-        await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+        await ScreenProtector.preventScreenshotOn();
       } else {
-        await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+        await ScreenProtector.preventScreenshotOff();
       }
     } catch (_) {}
   }
 
   Future<void> _authenticateAndLoad() async {
     try {
-      final ok = await _auth.authenticate(
-        localizedReason: 'Verify to export seed',
-        options: const AuthenticationOptions(biometricOnly: false, stickyAuth: true),
-      );
-      if (!ok && mounted) Navigator.pop(context);
       final ks = ref.read(keyServiceProvider);
       final m = await ks.exportMnemonic();
       if (!mounted) return;
