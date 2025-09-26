@@ -7,15 +7,11 @@
 
 ## UI Preview
 
-```{=html}
 <p align="center">
-```
-`<img src="images/Simulator%20Screenshot1.png" width="30%" alt="Launch Screen"/>`{=html}
-`<img src="images/Simulator%20Screenshot4.png" width="30%" alt="Wallet Home"/>`{=html}
-`<img src="images/Simulator%20Screenshot7.png" width="30%" alt="Send Screen"/>`{=html}
-```{=html}
+  <img src="images/Simulator%20Screenshot1.png" width="30%" alt="啟動畫面"/>
+  <img src="images/Simulator%20Screenshot4.png" width="30%" alt="錢包主畫面"/>
+  <img src="images/Simulator%20Screenshot7.png" width="30%" alt="發送介面"/>
 </p>
-```
 More screenshots are available in the `images/` directory.
 
 ## Demo Video
